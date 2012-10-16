@@ -1,6 +1,5 @@
 <?php 
-class AboutMeApi
-{
+class AboutMeApi {
   /**
    * API path format.
    */
@@ -67,8 +66,7 @@ class AboutMeApi
    * @param $object
    * @param $queryArray
    */
-  private function getData($obj_type, $action, $object, $queryArray = array()) 
-  {
+  private function getData($obj_type, $action, $object, $queryArray = array()) {
     // Build query string to append to API url.
     $appendQueryString = !empty($queryArray) ? '?' . http_build_query($queryArray) : '';
     
@@ -83,7 +81,7 @@ class AboutMeApi
     );
     
     // Populate API url replacements.
-    $url = str_replace(array_keys($replacements), $replacements, $this->apiPathFormat) ;
+    $url = str_replace(array_keys($replacements), $replacements, $this->apiPathFormat);
     
     // Initialise curl request.
     $ch = curl_init($url);
@@ -117,8 +115,7 @@ class AboutMeApi
    * @param $username
    * @param $extended
    */
-  public function userView($username, $extended = false)
-  {
+  public function userView($username, $extended = false) {
     // Build query array - defaults to empty array.
     $queryArray = $extended ? array('extended' => 'true') : array();
     // Return API response.
