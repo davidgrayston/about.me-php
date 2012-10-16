@@ -65,7 +65,7 @@ class AboutMeApi
    * @param $obj_type
    * @param $action
    * @param $object
-   * @param $queryString
+   * @param $queryArray
    */
   private function getData($obj_type, $action, $object, $queryArray = array()) 
   {
