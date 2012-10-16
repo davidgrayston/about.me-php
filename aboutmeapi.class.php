@@ -117,7 +117,7 @@ class AboutMeApi
    * @param $username
    * @param $extended
    */
-  public function getProfile($username, $extended = false)
+  public function userView($username, $extended = false)
   {
     // Build query array - defaults to empty array.
     $queryArray = $extended ? array('extended' => 'true') : array();
