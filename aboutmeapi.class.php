@@ -67,6 +67,7 @@ class AboutMeApi {
     $strValue = strval($value);
     return $strValue == '' ? $strValue : '/' . $strValue;
   }
+
   /**
    * Fetch remote data.
    * 
