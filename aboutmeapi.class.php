@@ -86,7 +86,7 @@ class AboutMeApi {
       '<format>' => $this->formatUrlPart($this->format),
       '<obj_type>' => $this->formatUrlPart($obj_type),
       '<action>' => $this->formatUrlPart($action),
-    	'<object>' => $this->formatUrlPart($object),
+      '<object>' => $this->formatUrlPart($object),
       '<type>' => $this->formatUrlPart($type),
       '<query>' => $appendQueryString
     );
