@@ -3,7 +3,7 @@ class AboutMeApi {
   /**
    * API path format.
    */
-  private $apiPathFormat = 'https://api.about.me/api<version><format><obj_type><action><object><type><query>';
+  const API_PATH_FORMAT = 'https://api.about.me/api<version><format><obj_type><action><object><type><query>';
 
   /**
    * API key set in construct.
@@ -91,7 +91,7 @@ class AboutMeApi {
     );
     
     // Populate API url replacements.
-    $url = str_replace(array_keys($replacements), $replacements, $this->apiPathFormat);
+    $url = str_replace(array_keys($replacements), $replacements, self::API_PATH_FORMAT);
     
     // Initialise curl request.
     $ch = curl_init($url);
