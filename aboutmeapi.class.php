@@ -3,7 +3,7 @@ class AboutMeApi {
   /**
    * API path format.
    */
-  private $apiPathFormat = 'https://api.about.me/api/<version>/<format>/<obj_type>/<action>/<object><query>';
+  private $apiPathFormat = 'https://api.about.me/api<version><format><obj_type><action><object><type><query>';
 
   /**
    * API key set in construct.
@@ -59,6 +59,15 @@ class AboutMeApi {
   }
 
   /**
+   * Prefixes URL part with slash.
+   * 
+   * @param $value
+   */
+  private function formatUrlPart($value) {
+    $strValue = strval($value);
+    return $strValue == '' ? $strValue : '/' . $strValue;
+  }
+  /**
    * Fetch remote data.
    * 
    * @param $obj_type
@@ -66,17 +75,18 @@ class AboutMeApi {
    * @param $object
    * @param $queryArray
    */
-  private function getData($obj_type, $action, $object, $queryArray = array()) {
+  private function getData($obj_type, $action, $object = '', $type = '', $queryArray = array()) {
     // Build query string to append to API url.
     $appendQueryString = !empty($queryArray) ? '?' . http_build_query($queryArray) : '';
     
     // API url replacements.
     $replacements = array(
-      '<version>' => $this->version,
-      '<format>' => $this->format,
-      '<obj_type>' => $obj_type,
-      '<action>' => $action,
-      '<object>' => $object,
+      '<version>' => $this->formatUrlPart($this->version),
+      '<format>' => $this->formatUrlPart($this->format),
+      '<obj_type>' => $this->formatUrlPart($obj_type),
+      '<action>' => $this->formatUrlPart($action),
+    	'<object>' => $this->formatUrlPart($object),
+      '<type>' => $this->formatUrlPart($type),
       '<query>' => $appendQueryString
     );
     
@@ -96,15 +106,16 @@ class AboutMeApi {
     curl_setopt($ch, CURLOPT_HEADER, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    // Must be POST request.
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, '');
-
     // Get JSON response.
     $response = json_decode(curl_exec($ch));
 
     // Close connection.
     curl_close($ch);
+    
+    // Throw Exception if request fails.
+    if ($response->status != 200) {
+      throw new Exception($response->error_message);
+    }
     
     return $response;
   }
@@ -119,6 +130,42 @@ class AboutMeApi {
     // Build query array - defaults to empty array.
     $queryArray = $extended ? array('extended' => 'true') : array();
     // Return API response.
-    return $this->getData('user', 'view', $username, $queryArray);
+    return $this->getData('user', 'view', $username, '', $queryArray);
+  }
+  
+  /**
+   * Fetch specified directory.
+   * 
+   * @param $type
+   * @param $extended
+   * @throws Exception
+   */
+  public function usersViewDirectory($type, $extended = false) {
+    // Build query array - defaults to empty array.
+    $queryArray = $extended ? array('extended' => 'true') : array();
+
+    // Array of allowed types.
+    $allowedTypes = array('all', 'spotlight', 'featured', 'inspirational', 'team', 'founder');
+  
+    // Check $type is allowed
+    if (!in_array($type, $allowedTypes)) {
+      throw new Exception('Only the following types are allowed: ' . implode(', ', $allowedTypes));
+    }
+    
+    // Return API response.
+    return $this->getData('users', 'view', 'directory', $type, $queryArray);
+  }
+  
+  /**
+   * Fetch random user pages.
+   *
+   * @param $extended
+   */
+  public function usersViewRandom($extended = false) {
+    // Build query array - defaults to empty array.
+    $queryArray = $extended ? array('extended' => 'true') : array();
+
+    // Return API response.
+    return $this->getData('users', 'view', 'random', '', $queryArray);
   }
 }
