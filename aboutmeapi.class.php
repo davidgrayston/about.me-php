@@ -98,9 +98,7 @@ class AboutMeApi {
     $ch = curl_init($url);
     
     // Set authentication headers.
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-      'Authorization: Basic ' . $this->key
-    ));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Basic ' . $this->key));
 
     // CURL settings.
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
@@ -114,6 +112,11 @@ class AboutMeApi {
     curl_close($ch);
     
     // Throw Exception if request fails.
+    if (!isset($response->status)) {
+      throw new Exception('Empty response');
+    }
+
+    // Throw Exception if status isn't 200.
     if ($response->status != 200) {
       throw new Exception($response->error_message);
     }
