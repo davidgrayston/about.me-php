@@ -1,4 +1,10 @@
 <?php 
+/**
+ * AboutMeApi
+ * https://github.com/davidgrayston/about.me-php
+ * 
+ * @author David Grayston
+ */
 class AboutMeApi {
   /**
    * API path format.
@@ -28,7 +34,7 @@ class AboutMeApi {
   /**
    * Construct.
    *
-   * @param $params
+   * @param Array $params
    *   'key' (required)
    *   'version' (optional)
    *   'format' (optional)
@@ -61,7 +67,7 @@ class AboutMeApi {
   /**
    * Prefixes URL part with slash.
    * 
-   * @param $value
+   * @param String $value
    */
   private function formatUrlPart($value) {
     $strValue = strval($value);
@@ -71,10 +77,11 @@ class AboutMeApi {
   /**
    * Fetch remote data.
    * 
-   * @param $obj_type
-   * @param $action
-   * @param $object
-   * @param $queryArray
+   * @param String $obj_type
+   * @param String $action
+   * @param String $object
+   * @param String $type
+   * @param Array $queryArray
    */
   private function getData($obj_type, $action, $object = '', $type = '', $queryArray = array()) {
     // Build query string to append to API url.
@@ -127,8 +134,8 @@ class AboutMeApi {
   /**
    * Get user profile.
    * 
-   * @param $username
-   * @param $extended
+   * @param String $username
+   * @param Boolean $extended
    */
   public function userView($username, $extended = false) {
     // Build query array - defaults to empty array.
@@ -140,8 +147,8 @@ class AboutMeApi {
   /**
    * Fetch specified directory.
    * 
-   * @param $type
-   * @param $extended
+   * @param String $type
+   * @param Boolean $extended
    * @throws Exception
    */
   public function usersViewDirectory($type, $extended = false) {
@@ -163,7 +170,7 @@ class AboutMeApi {
   /**
    * Fetch random user pages.
    *
-   * @param $extended
+   * @param Boolean $extended
    */
   public function usersViewRandom($extended = false) {
     // Build query array - defaults to empty array.
